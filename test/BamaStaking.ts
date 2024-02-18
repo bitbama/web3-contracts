@@ -45,9 +45,9 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
         it("Should have 0 staked balance", async function () {
             expect(await staking.getTotalStaked()).to.eq(0)
         })
-        it("Should have 0.0002% rewards per hour", async function () {
+        it("Should have 0.0005% rewards per hour", async function () {
             expect(await staking.getRewardsPerHour()).to.eq(
-                5000
+                2000
             )
         })
     })
@@ -127,7 +127,7 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
             const stakerDetails = await staking.getStakerDetails(signer)
             const totalStaked = await staking.getTotalStaked()
             const ratio = stakerDetails.totalAmtStaked / totalStaked
-            const currentRewardindex = ratio * stakerDetails.totalAmtStaked / ethers.toBigInt(5000)
+            const currentRewardindex = ratio * stakerDetails.totalAmtStaked / ethers.toBigInt(2000)
             expect(stakerDetails.currentRewardIndex).to.eq(currentRewardindex)
         })
 
@@ -197,10 +197,10 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
     
             beforeEach(customBeforeEach)
 
-        it("Should have 0.0002% of amountStaked(signer)/totalStaked(contract) rewards after one hour", async function () {
+        it("Should have 0.0005% of amountStaked(signer)/totalStaked(contract) rewards after one hour", async function () {
             await staking.stake(amount)
             await time.increase(60*60)
-            expect(await staking.currentRewardsEarned(signer)).to.eq(ethers.parseEther("0.2"))
+            expect(await staking.currentRewardsEarned(signer)).to.eq(ethers.parseEther("0.5"))
         })
     })
 
@@ -211,7 +211,7 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
         const amount = ethers.parseEther("1000")
         const mintAmount = ethers.parseEther("10000")
         const mintId = "7654hvgs2hvs"
-        const reward = ethers.parseEther("0.2")
+        const reward = ethers.parseEther("0.5")
 
         const customBeforeEach = async function () {
             const { bamaToken, bamaStaking, stakingAddress, owner } = await loadFixture(deployFixture)
@@ -301,7 +301,7 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
         const amount = ethers.parseEther("1000")
         const mintAmount = ethers.parseEther("10000")
         const mintId = "7654hvgs2hvs"
-        const reward = ethers.parseEther("0.2")
+        const reward = ethers.parseEther("0.5")
 
         const customBeforeEach = async function () {
             const { bamaToken, bamaStaking, stakingAddress, owner } = await loadFixture(deployFixture)
@@ -374,7 +374,7 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
         const amount = ethers.parseEther("1000")
         const mintAmount = ethers.parseEther("10000")
         const mintId = "7654hvgs2hvs"
-        const reward = ethers.parseEther("0.2")
+        const reward = ethers.parseEther("0.5")
 
         const customBeforeEach = async function () {
             const { bamaToken, bamaStaking, stakingAddress, owner } = await loadFixture(deployFixture)
@@ -469,9 +469,9 @@ import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
         let signer: any;
         const amount = ethers.parseEther("1000")
         const mintAmount = ethers.parseEther("10000")
-        const fee = amount / ethers.toBigInt(100);
+        const fee = (amount * ethers.toBigInt(30)) / ethers.toBigInt(100);
         const mintId = "7654hvgs2hvs"
-        const reward = ethers.parseEther("0.2")
+        const reward = ethers.parseEther("0.5")
 
         const customBeforeEach = async function () {
             const { bamaToken, bamaStaking, stakingAddress, owner } = await loadFixture(deployFixture)

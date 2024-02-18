@@ -19,7 +19,7 @@ contract BamaStaking {
     IERC20 private immutable token;
     address private immutable i_owner;
     uint private constant MULTIPLIER = 1e18;
-    uint256 private constant REWARDS_PER_HOUR = 5000; // 0.0002%
+    uint256 private constant REWARDS_PER_HOUR = 2000; // 0.0005%
     uint256 private totalStaked = 0;
 
     event RewardTokenReceived(address indexed sender, uint256 indexed amount); 
@@ -146,7 +146,7 @@ contract BamaStaking {
         uint256 balanceOf = StakerDetails[msg.sender].totalAmtStaked;
         uint256 currAmtEarned = _currentRewardsEarned(msg.sender);
         if(balanceOf < amount_) revert BamaStaking__InsufficientBalance();
-        uint256 fee = amount_ * 1/100;
+        uint256 fee = amount_ * 30/100;
         StakerDetails[msg.sender].withdrawalAmount = amount_ - fee;
         StakerDetails[msg.sender].totalAmtStaked -= fee;
         StakerDetails[msg.sender].totalAmtEarned += currAmtEarned;
