@@ -88,30 +88,8 @@ contract BamaStaking {
         emit Staked(msg.sender, amount_);
     }
 
-    // function autoStake(address account, uint256 amount_, string calldata stakeId) external onlyOwner {
-    //     if(_rewardTokenBalance() == 0) revert BamaStaking__NoMoreRewardToken();
-    //     if(StakerDetails[account].unstaked == 1) revert BamaStaking__UnstakeInProgress();
-
-    //     uint256 currentAmtEarned = _currentRewardsEarned(account);
-    //     StakerDetails[account].currentAmtEarned = currentAmtEarned;
-    //     StakerDetails[account].totalAmtStaked += amount_;
-    //     StakerDetails[account].lastUpdatedAt = block.timestamp;
-    //     totalStaked += amount_;
-    //     _updateRewardIndex(account);
-    //     token.safeTransferFrom(account, address(this), amount_);
-    //     emit AutoStaked(account, amount_, stakeId);
-    // }
-
     function currentRewardsEarned(address address_) external view returns (uint256) {
        return _currentRewardsEarned(address_);
-    }
-
-    function currentTotalStaked(address address_) external view returns (uint256) {
-        return (StakerDetails[address_].totalAmtStaked);
-    }
-
-     function currentTotalEarned(address address_) external view returns (uint256) {
-        return (StakerDetails[address_].totalAmtEarned);
     }
 
     function _currentRewardsEarned(address address_) internal view returns (uint256) {
