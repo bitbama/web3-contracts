@@ -93,7 +93,7 @@ contract BamaStaking {
     }
 
     function _currentRewardsEarned(address address_) internal view returns (uint256) {
-        if(StakerDetails[msg.sender].unstaked == 1) return 0;
+        if(StakerDetails[msg.sender].unstaked == 1) return StakerDetails[address_].currentAmtEarned;
 
         uint256 lastUpdated = StakerDetails[address_].lastUpdatedAt;
         uint256 elapsedSeconds = (block.timestamp - lastUpdated);
@@ -120,6 +120,7 @@ contract BamaStaking {
     }
 
     function _compound() internal {
+        if(StakerDetails[msg.sender].unstaked == 1) revert BamaStaking__UnstakeInProgress();
         uint256 amount = _currentRewardsEarned(msg.sender);
         totalStaked += amount;
         StakerDetails[msg.sender].totalAmtStaked += amount;
