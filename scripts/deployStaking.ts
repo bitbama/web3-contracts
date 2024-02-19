@@ -9,8 +9,10 @@ async function main() {
   console.log(`Deployed Bama Token to ${bamaToken.target}`)
   console.log(`_____________________________________`)
 
-//   Staking Contract
-const bamaStaking = await ethers.deployContract("BamaStaking", [bamaToken.target])
+  //   Staking Contract
+  const bamaStaking = await ethers.deployContract("BamaStaking", [
+    bamaToken.target,
+  ])
   await bamaStaking.waitForDeployment()
   await bamaStaking.deploymentTransaction()?.wait(5)
   console.log(`Deployed Bama Staking to ${bamaStaking.target}`)
@@ -20,9 +22,8 @@ const bamaStaking = await ethers.deployContract("BamaStaking", [bamaToken.target
     process.env.ETHERSCAN_API_KEY
   ) {
     await verify(`${bamaToken.target}`, [])
-    await verify(`${bamaStaking.target}`, [])
+    await verify(`${bamaStaking.target}`, [bamaToken.target])
   }
-
 }
 
 main().catch((error) => {
