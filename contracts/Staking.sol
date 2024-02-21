@@ -153,6 +153,8 @@ contract BamaStaking {
     uint256 balanceOf = StakerDetails[msg.sender].totalAmtStaked;
     uint256 currAmtEarned = _currentRewardsEarned(msg.sender);
     if (balanceOf < amount_) revert BamaStaking__InsufficientBalance();
+    if (StakerDetails[msg.sender].unstaked == 1)
+      revert BamaStaking__UnstakeInProgress();
     StakerDetails[msg.sender].lastWithdrawAccessTime =
       block.timestamp +
       21 days;
@@ -167,6 +169,8 @@ contract BamaStaking {
     uint256 balanceOf = StakerDetails[msg.sender].totalAmtStaked;
     uint256 currAmtEarned = _currentRewardsEarned(msg.sender);
     if (balanceOf < amount_) revert BamaStaking__InsufficientBalance();
+    if (StakerDetails[msg.sender].unstaked == 1)
+      revert BamaStaking__UnstakeInProgress();
     uint256 fee = (amount_ * 30) / 100;
     StakerDetails[msg.sender].withdrawalAmount = amount_ - fee;
     StakerDetails[msg.sender].totalAmtStaked -= fee;
@@ -195,6 +199,7 @@ contract BamaStaking {
     totalStaked -= withdrawalAmount;
     StakerDetails[msg.sender].unstaked = 0;
     StakerDetails[msg.sender].currentAmtEarned = 0;
+    StakerDetails[msg.sender].withdrawalAmount = 0;
     token.safeTransfer(msg.sender, finalAmount);
     emit Unstaked(msg.sender, finalAmount);
   }

@@ -692,10 +692,13 @@ describe("BamaStaking", function () {
       beforeEach(customBeforeEach)
 
       it("Should revert if signer has not initiated the unstake action earlier", async function () {
-        await staking.emergencyUnstake(amount)
         await staking.withdraw()
         await token.approve(stakingAddr, amount)
         await staking.stake(amount)
+        // await staking.emergencyUnstake(amount)
+        // await staking.withdraw()
+        // await token.approve(stakingAddr, amount)
+        // await staking.stake(amount)
         await time.increase(60 * 60)
         await expect(staking.withdraw()).to.be.revertedWithCustomError(
           staking,
@@ -704,13 +707,12 @@ describe("BamaStaking", function () {
       })
 
       it("Should revert if it is not yet 21 days after untstake was initiated", async function () {
-        await staking.emergencyUnstake(amount)
         await staking.withdraw()
         await token.approve(stakingAddr, amount)
         await staking.stake(amount)
         await time.increase(60 * 60)
         await staking.unstake(amount)
-        await time.increase(1814398)
+        await time.increase(1814398) // 21 days = 1814400
         await expect(staking.withdraw()).to.be.revertedWithCustomError(
           staking,
           "BamaStaking__NotYetWithdrawalTime"
