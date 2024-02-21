@@ -123,10 +123,12 @@ contract BamaStaking {
     if (StakerDetails[msg.sender].unstaked == 1)
       revert BamaStaking__UnstakeInProgress();
     uint256 amount = _currentRewardsEarned(msg.sender);
-    if (amount <= 0) revert BamaStaking__NoEarnedAmount();
-    _updateStakerDetails(amount);
-    token.safeTransfer(msg.sender, amount);
-    emit Claimed(msg.sender, amount);
+    uint256 currentAmtEarned = StakerDetails[msg.sender].currentAmtEarned;
+    uint256 finalAmount = amount + currentAmtEarned;
+    if (finalAmount <= 0) revert BamaStaking__NoEarnedAmount();
+    _updateStakerDetails(finalAmount);
+    token.safeTransfer(msg.sender, finalAmount);
+    emit Claimed(msg.sender, finalAmount);
   }
 
   function compound() external {
@@ -137,12 +139,14 @@ contract BamaStaking {
     if (StakerDetails[msg.sender].unstaked == 1)
       revert BamaStaking__UnstakeInProgress();
     uint256 amount = _currentRewardsEarned(msg.sender);
-    totalStaked += amount;
-    StakerDetails[msg.sender].totalAmtStaked += amount;
-    StakerDetails[msg.sender].totalAmtEarned += amount;
+    uint256 currentAmtEarned = StakerDetails[msg.sender].currentAmtEarned;
+    uint256 finalAmount = amount + currentAmtEarned;
+    totalStaked += finalAmount;
+    StakerDetails[msg.sender].totalAmtStaked += finalAmount;
+    StakerDetails[msg.sender].totalAmtEarned += finalAmount;
     StakerDetails[msg.sender].currentAmtEarned = 0;
     StakerDetails[msg.sender].lastUpdatedAt = block.timestamp;
-    emit Compound(msg.sender, amount);
+    emit Compound(msg.sender, finalAmount);
   }
 
   function unstake(uint256 amount_) external {
