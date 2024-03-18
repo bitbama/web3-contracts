@@ -15,9 +15,7 @@ const ARBITRUM_RPC_URL =
 const GOERLI_RPC_URL =
   process.env.GOERLI_RPC_URL ||
   "https://eth-goerli.g.alchemy.com/v2/YOUR-API-KEY"
-const PRIVATE_KEY =
-  process.env.PRIVATE_KEY ||
-  "0x11ee3108a03081fanythinge260ecdc106554d09damything9d1209bcafd4694"
+const PRIVATE_KEY = process.env.PRIVATE_KEY || "anykey"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 
 const config: HardhatUserConfig = {
