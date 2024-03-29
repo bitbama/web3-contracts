@@ -203,6 +203,7 @@ contract BamaStaking {
     StakerDetails[msg.sender].unstaked = 0;
     StakerDetails[msg.sender].currentAmtEarned = 0;
     StakerDetails[msg.sender].withdrawalAmount = 0;
+    _updateRewardIndex(msg.sender);
     token.safeTransfer(msg.sender, finalAmount);
     emit Unstaked(msg.sender, finalAmount);
   }
