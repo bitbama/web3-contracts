@@ -70,9 +70,11 @@ contract BamaStaking {
   }
 
   function _updateRewardIndex(address address_) private {
-    uint256 newRewardIndex = (StakerDetails[address_].totalAmtStaked /
-      totalStaked) * StakerDetails[address_].totalAmtStaked;
-    StakerDetails[address_].currentRewardIndex = ((newRewardIndex * 1) /
+      uint256 normalTotalAmtStaked = StakerDetails[address_].totalAmtStaked;
+      uint256 surplusTotalAmtStaked = StakerDetails[address_].totalAmtStaked * MULTIPLIER;
+      uint256 reducedTotalAmtStaked = normalTotalAmtStaked / MULTIPLIER;
+      uint256 customRewardIndex = (surplusTotalAmtStaked / totalStaked) * reducedTotalAmtStaked;
+    StakerDetails[address_].currentRewardIndex = ((customRewardIndex * 1) /
       REWARDS_PER_HOUR);
   }
 
