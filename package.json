@@ -6,7 +6,9 @@
     "compile": "npx hardhat compile",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test-token": "npx hardhat test --grep BamaToken",
-    "test-staking": "npx hardhat test --grep BamaStaking"
+    "test-staking": "npx hardhat test --grep BamaStaking",
+    "test-migrationII": "npx hardhat test --grep MigrationII",
+    "sample-deploy-script": "npx hardhat run scripts/<your file> --network <your-network>"
   },
   "keywords": [],
   "author": "",

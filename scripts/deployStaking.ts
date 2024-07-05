@@ -11,7 +11,7 @@ async function main() {
 
   //   Staking Contract
   const bamaStaking = await ethers.deployContract("BamaStaking", [
-    "0x375Da692C2743E3AA18c51fDCE139d08490BfA42",
+    `${process.env.STAGING_BAMA_TOKEN}`,
   ])
   await bamaStaking.waitForDeployment()
   await bamaStaking.deploymentTransaction()?.wait(5)
@@ -21,10 +21,8 @@ async function main() {
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    //await verify(`${"0x375Da692C2743E3AA18c51fDCE139d08490BfA42"}`, [])
-    await verify(`${bamaStaking.target}`, [
-      "0x375Da692C2743E3AA18c51fDCE139d08490BfA42",
-    ])
+    //await verify(`${process.env.STAGING_BAMA_TOKEN}`, [])
+    await verify(`${bamaStaking.target}`, [`${process.env.STAGING_BAMA_TOKEN}`])
   }
 }
 
