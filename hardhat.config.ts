@@ -15,9 +15,14 @@ const ARBITRUM_RPC_URL =
 const GOERLI_RPC_URL =
   process.env.GOERLI_RPC_URL ||
   "https://eth-goerli.g.alchemy.com/v2/YOUR-API-KEY"
+// BNB
+const BSC_TESTNET_RPC_URL = process.env.BSC_TESTNET_RPC_URL || "your-rpc-url"
+const BSC_MAINNET_RPC_URL = process.env.BSC_MAINNET_RPC_URL || "your-rpc-url"
+//
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "anykey"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || ""
 const ARBISCAN_API_KEY = process.env.ARBISCAN_API_KEY || ""
+const BSCSCAN_API_KEY = process.env.BSCSCAN_API_KEY || ""
 
 const config: HardhatUserConfig = {
   // solidity: "0.8.19",
@@ -35,6 +40,16 @@ const config: HardhatUserConfig = {
       url: ARBITRUM_RPC_URL,
       accounts: [PRIVATE_KEY],
       chainId: 42161,
+    },
+    bscTestnet: {
+      url: BSC_TESTNET_RPC_URL,
+      chainId: 97,
+      accounts: [PRIVATE_KEY],
+    },
+    bscMainnet: {
+      url: BSC_MAINNET_RPC_URL,
+      chainId: 56,
+      accounts: [PRIVATE_KEY],
     },
     sepolia: {
       url: SEPOLIA_RPC_URL,
@@ -65,6 +80,8 @@ const config: HardhatUserConfig = {
       mainnet: ETHERSCAN_API_KEY,
       sepolia: ETHERSCAN_API_KEY,
       arbitrumOne: ARBISCAN_API_KEY,
+      bscMainnet: BSCSCAN_API_KEY,
+      bscTestnet: BSCSCAN_API_KEY,
     },
   },
   gasReporter: {

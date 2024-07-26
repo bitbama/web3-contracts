@@ -8,7 +8,8 @@
     "test-token": "npx hardhat test --grep BamaToken",
     "test-staking": "npx hardhat test --grep BamaStaking",
     "test-migrationII": "npx hardhat test --grep MigrationII",
-    "sample-deploy-script": "npx hardhat run scripts/<your file> --network <your-network>"
+    "sample-deploy-script": "npx hardhat run scripts/<your file> --network <your-network>",
+    "sample-verify-contract": "npx hardhat verify --network <your network> <deployed contract address>"
   },
   "keywords": [],
   "author": "",
