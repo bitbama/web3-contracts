@@ -105,16 +105,6 @@ describe("MigrationII", function () {
           connectedContract.migrationII(otherAccount, migrationAmount, mintId)
         ).to.be.revertedWithCustomError(migration, "MigrationII__NotOwner")
       })
-
-      it("Should not mint token if amount is greater than 10,000", async function () {
-        const customAmt = ethers.parseEther("10001")
-        await expect(
-          migration.migrationII(otherAccount, customAmt, mintId)
-        ).to.be.revertedWithCustomError(
-          migration,
-          "MigrationII__MaxMigrationAmtExceeded"
-        )
-      })
     })
 
     describe("Events", function () {

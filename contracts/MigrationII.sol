@@ -5,7 +5,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 // Error
 error MigrationII__NotOwner();
-error MigrationII__MaxMigrationAmtExceeded();
 
 contract MigrationII {
   using SafeERC20 for IERC20;
@@ -14,7 +13,6 @@ contract MigrationII {
   address private immutable i_owner;
   uint private constant MULTIPLIER = 1e18;
   uint256 private totalMigrated = 0;
-  uint256 internal constant MAX_MIGRATION_AMOUNT = 10_000 * MULTIPLIER;
 
   event TokenReceived(address indexed sender, uint256 indexed amount);
   event MigratedII(
@@ -56,8 +54,6 @@ contract MigrationII {
     uint256 amount_,
     string calldata mintId
   ) internal onlyOwner {
-    if (amount_ > MAX_MIGRATION_AMOUNT)
-      revert MigrationII__MaxMigrationAmtExceeded();
     totalMigrated += amount_;
     token.safeTransfer(account, amount_);
     emit MigratedII(account, amount_, mintId);
