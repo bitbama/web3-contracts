@@ -1,7 +1,7 @@
 import { loadFixture, time } from "@nomicfoundation/hardhat-network-helpers"
 import { expect } from "chai"
 import { ethers } from "hardhat"
-import { Address, BamaStaking, BamaToken, IERC20 } from "../typechain-types"
+import { BamaStaking, BamaToken } from "../typechain-types"
 
 describe("BamaStaking", function () {
   async function deployFixture() {
@@ -622,6 +622,7 @@ describe("BamaStaking", function () {
     let stakingAddr: any
     let signer: any
     const amount = ethers.parseEther("1000")
+    const leftOveramount = ethers.parseEther("10")
     const mintAmount = ethers.parseEther("10000")
     const mintId = "7654hvgs2hvs"
 
@@ -639,7 +640,7 @@ describe("BamaStaking", function () {
 
       await staking.stake(amount)
       await time.increase(60 * 60 - 1)
-      await staking.unstake(amount)
+      await staking.unstake(amount - leftOveramount)
       await time.increase(60 * 60 * 24 * 21)
     }
 

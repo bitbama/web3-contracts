@@ -3,15 +3,15 @@ import verify from "../utils/verify"
 import { developmentChains } from "../helper-hardhat-config"
 
 async function main() {
-  const bamaToken = await ethers.deployContract("BamaToken")
-  await bamaToken.waitForDeployment()
-  await bamaToken.deploymentTransaction()?.wait(5)
-  console.log(`Deployed Bama Token to ${bamaToken.target}`)
-  console.log(`_____________________________________`)
+  // const bamaToken = await ethers.deployContract("BamaToken")
+  // await bamaToken.waitForDeployment()
+  // await bamaToken.deploymentTransaction()?.wait(5)
+  // console.log(`Deployed Bama Token to ${bamaToken.target}`)
+  // console.log(`_____________________________________`)
 
   //   Staking Contract
   const bamaStaking = await ethers.deployContract("BamaStaking", [
-    bamaToken.target,
+    `${process.env.STAGING_BAMA_TOKEN}`,
   ])
   await bamaStaking.waitForDeployment()
   await bamaStaking.deploymentTransaction()?.wait(5)
@@ -21,8 +21,8 @@ async function main() {
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    await verify(`${bamaToken.target}`, [])
-    await verify(`${bamaStaking.target}`, [bamaToken.target])
+    //await verify(`${process.env.STAGING_BAMA_TOKEN}`, [])
+    await verify(`${bamaStaking.target}`, [`${process.env.STAGING_BAMA_TOKEN}`])
   }
 }
 

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-only
 pragma solidity ^0.8.20;
-import "hardhat/console.sol";
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -70,9 +69,13 @@ contract BamaStaking {
   }
 
   function _updateRewardIndex(address address_) private {
-    uint256 newRewardIndex = (StakerDetails[address_].totalAmtStaked /
-      totalStaked) * StakerDetails[address_].totalAmtStaked;
-    StakerDetails[address_].currentRewardIndex = ((newRewardIndex * 1) /
+    uint256 normalTotalAmtStaked = StakerDetails[address_].totalAmtStaked;
+    uint256 surplusTotalAmtStaked = StakerDetails[address_].totalAmtStaked *
+      MULTIPLIER;
+    uint256 reducedTotalAmtStaked = normalTotalAmtStaked / MULTIPLIER;
+    uint256 customRewardIndex = (surplusTotalAmtStaked / totalStaked) *
+      reducedTotalAmtStaked;
+    StakerDetails[address_].currentRewardIndex = ((customRewardIndex * 1) /
       REWARDS_PER_HOUR);
   }
 
@@ -200,6 +203,7 @@ contract BamaStaking {
     StakerDetails[msg.sender].unstaked = 0;
     StakerDetails[msg.sender].currentAmtEarned = 0;
     StakerDetails[msg.sender].withdrawalAmount = 0;
+    _updateRewardIndex(msg.sender);
     token.safeTransfer(msg.sender, finalAmount);
     emit Unstaked(msg.sender, finalAmount);
   }
