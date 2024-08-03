@@ -9,7 +9,8 @@ error Connect__NotEnoughEth();
 
 contract Connect {
   //state variables
-  uint256 public constant MINIMUM_ETH = 5_000_000_000_000_00;
+  uint256 public constant MINIMUM_ETH = 28_000_000_000_000_00; // BNB amount
+  // eth amount = 5_000_000_000_000_00;
   address private immutable i_owner;
 
   // Modifiers
