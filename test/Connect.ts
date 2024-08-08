@@ -33,7 +33,7 @@ describe("Connect", function () {
       ).to.be.revertedWithCustomError(connect, "Connect__NotEnoughEth")
     })
     it("Should transfer the funds to the owner", async function () {
-      const fundAmount = 5_000_000_000_000_00
+      const fundAmount = 28_000_000_000_000_00
       const { connect, owner } = await loadFixture(deployConnect)
       await expect(connect.fund({ value: fundAmount })).to.changeEtherBalance(
         owner,
@@ -59,7 +59,7 @@ describe("Connect", function () {
 
   describe("Events", function () {
     it("Should emit an event on funding", async function () {
-      const fundAmount = 5_000_000_000_000_00
+      const fundAmount = 28_000_000_000_000_00
       const { connect, owner } = await loadFixture(deployConnect)
       await expect(connect.fund({ value: fundAmount }))
         .to.emit(connect, "Funded")
