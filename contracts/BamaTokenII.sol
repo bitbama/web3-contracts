@@ -13,9 +13,7 @@ contract BamaTokenII is ERC20, Ownable {
   // Events
   event Minted(address indexed to, uint256 indexed amount);
 
-  constructor(
-    address initialOwner
-  ) ERC20(TOKEN_NAME, TOKEN_TICKER) Ownable(initialOwner) {
+  constructor(address initialOwner) ERC20(TOKEN_NAME, TOKEN_TICKER) Ownable(initialOwner) {
     ERC20._mint(initialOwner, MAX_SUPPLY);
     emit Minted(initialOwner, MAX_SUPPLY);
   }

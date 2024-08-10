@@ -5,7 +5,7 @@ import { developmentChains } from "../helper-hardhat-config"
 async function main() {
   //   Staking Contract
   const bamaMigration = await ethers.deployContract("MigrationII", [
-    `${process.env.STAGING_BAMA_TOKEN}`,
+    `${process.env.OLD_BAMA_TOKEN_ADDRESS}`,
   ])
   await bamaMigration.waitForDeployment()
   await bamaMigration.deploymentTransaction()?.wait(5)
@@ -15,9 +15,9 @@ async function main() {
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    //await verify(`${process.env.STAGING_BAMA_TOKEN}`, [])
+    //await verify(`${process.env.OLD_BAMA_TOKEN_ADDRESS}`, [])
     await verify(`${bamaMigration.target}`, [
-      `${process.env.STAGING_BAMA_TOKEN}`,
+      `${process.env.OLD_BAMA_TOKEN_ADDRESS}`,
     ])
   }
 }
