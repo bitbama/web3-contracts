@@ -3,6 +3,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 // Error
+error BamaTokenSwap__HaveSwappedBefore();
 error BamaTokenWap__NotOwner();
 
 contract BamaTokenSwap {
@@ -13,9 +14,19 @@ contract BamaTokenSwap {
   uint private constant MULTIPLIER = 10 ** 18;
   uint256 private totalSwapped = 0;
 
+  struct SwappedHolder {
+    bool swapped;
+  }
+  mapping(address => SwappedHolder) public SwappedHolders;
+
    // Modifiers
   modifier onlyOwner() {
     if (msg.sender != i_owner) revert BamaTokenWap__NotOwner();
+    _;
+  }
+
+  modifier oneTimeSwap(address account) {
+    if(SwappedHolders[account].swapped) revert BamaTokenSwap__HaveSwappedBefore();
     _;
   }
 
@@ -32,8 +43,9 @@ contract BamaTokenSwap {
   function swapToken(
     address account_,
     uint256 amount_
-  ) external onlyOwner {
+  ) external onlyOwner oneTimeSwap(account_) {
     totalSwapped += amount_;
+    SwappedHolders[account_].swapped = true;
     i_newToken.safeTransfer(account_, amount_);
     emit TokenSwapped(account_, amount_);
   }
