@@ -5,17 +5,19 @@ import { developmentChains } from "../helper-hardhat-config"
 const DEPLOYER_ADDRESS = `${process.env.DEPLOYER_ADDRESS}`
 
 async function main() {
-  // const bamaTokenII = await ethers.deployContract("BamaTokenII", [DEPLOYER_ADDRESS])
-  // await bamaTokenII.waitForDeployment()
-  // await bamaTokenII.deploymentTransaction()?.wait(5)
-  // console.log(`Deployed to ${bamaTokenII.target}`, `By ${DEPLOYER_ADDRESS}`)
-  // console.log(`_____________________________________`)
+  const bamaTokenII = await ethers.deployContract("BamaTokenII", [
+    DEPLOYER_ADDRESS,
+  ])
+  await bamaTokenII.waitForDeployment()
+  await bamaTokenII.deploymentTransaction()?.wait(5)
+  console.log(`Deployed to ${bamaTokenII.target}`, `By ${DEPLOYER_ADDRESS}`)
+  console.log(`_____________________________________`)
 
-  const newTokenAddress = "0xb6250bb0E14437b8f81C862eBcD9708C336E7F15" // bamaTokenII.target
+  const newTokenAddress = bamaTokenII.target
 
-   //   Bama Token Swap Contract
-   const bamaTokenSwap = await ethers.deployContract("BamaTokenSwap", [
-    `${newTokenAddress}`
+  //   Bama Token Swap Contract
+  const bamaTokenSwap = await ethers.deployContract("BamaTokenSwap", [
+    `${newTokenAddress}`,
   ])
   await bamaTokenSwap.waitForDeployment()
   await bamaTokenSwap.deploymentTransaction()?.wait(5)
@@ -25,12 +27,9 @@ async function main() {
     !developmentChains.includes(network.name) &&
     process.env.ETHERSCAN_API_KEY
   ) {
-    //await verify(`${newTokenAddress}`, [DEPLOYER_ADDRESS])
-    await verify(`${bamaTokenSwap.target}`, [
-      `${newTokenAddress}`
-    ])
+    await verify(`${newTokenAddress}`, [DEPLOYER_ADDRESS])
+    await verify(`${bamaTokenSwap.target}`, [`${newTokenAddress}`])
   }
-
 }
 
 main().catch((error) => {
