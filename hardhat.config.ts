@@ -80,7 +80,7 @@ const config: HardhatUserConfig = {
       mainnet: ETHERSCAN_API_KEY,
       sepolia: ETHERSCAN_API_KEY,
       arbitrumOne: ARBISCAN_API_KEY,
-      bscMainnet: BSCSCAN_API_KEY,
+      bsc: BSCSCAN_API_KEY,
       bscTestnet: BSCSCAN_API_KEY,
     },
   },
