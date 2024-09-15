@@ -11,6 +11,7 @@ error BamaStaking__NoEarnedAmount();
 error BamaStaking__HasNotUnstaked();
 error BamaStaking__NotYetWithdrawalTime();
 error BamaStaking__UnstakeInProgress();
+error BamaStaking__HasUpdatedFrmOldContr();
 
 contract BamaStaking {
   using SafeERC20 for IERC20;
@@ -206,6 +207,24 @@ contract BamaStaking {
     _updateRewardIndex(msg.sender);
     token.safeTransfer(msg.sender, finalAmount);
     emit Unstaked(msg.sender, finalAmount);
+  }
+
+  function updateStakerFrmOldContr(
+    address account, uint256 totalAmtStaked, uint256 totalAmtEarned, 
+    uint256 currentAmtEarned, uint256 withdrawalAmount, uint256 lastUpdatedAt, 
+    uint256 currentRewardIndex, uint256 lastWithdrawAccessTime, uint256 unstaked
+  ) external onlyOwner {
+    if (StakerDetails[account].lastUpdatedAt > 1) revert BamaStaking__HasUpdatedFrmOldContr();
+    StakerDetails[account].totalAmtStaked = totalAmtStaked;
+    StakerDetails[account].totalAmtEarned = totalAmtEarned;
+    StakerDetails[account].currentAmtEarned = currentAmtEarned;
+    StakerDetails[account].withdrawalAmount = withdrawalAmount;
+    StakerDetails[account].lastUpdatedAt = lastUpdatedAt;
+    StakerDetails[account].currentRewardIndex = currentRewardIndex;
+    StakerDetails[account].lastWithdrawAccessTime = lastWithdrawAccessTime;
+    StakerDetails[account].unstaked = unstaked;
+    totalStaked += totalAmtStaked;
+    emit Staked(account, totalAmtStaked);
   }
 
   function getAssociatedToken() public view returns (IERC20) {
